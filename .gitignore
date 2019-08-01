@@ -1,0 +1,14 @@
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+/database/database.sqlite
+/tests/tmp
+/storage/*.key
+/composer.lock
+/files
+/patches
+/db.sqlite
+/build/logs/*
+yarn.lock
