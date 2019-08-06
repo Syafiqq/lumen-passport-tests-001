@@ -90,6 +90,7 @@ class RefreshGrantTest extends TestCase
             'client_secret' => $this->client->{'secret'},
             'scope' => 'scope-1 scope-2',
         ];
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         var_dump($body);
@@ -120,6 +121,7 @@ class RefreshGrantTest extends TestCase
             'client_secret' => $this->client->{'secret'},
             'scope' => 'scope-1',
         ];
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         var_dump($body);
@@ -140,6 +142,7 @@ class RefreshGrantTest extends TestCase
     public function test_it_access_refresh_route_with_client_twice_and_right_argument__ok()
     {
         $token = $this->access_token_from_client();
+        $this->refreshApplication();
         $token = $this->access_token_from_client();
         $access_token = DB::table('oauth_access_tokens')
             ->get();
@@ -154,6 +157,7 @@ class RefreshGrantTest extends TestCase
             'client_secret' => $this->client->{'secret'},
             'scope' => 'scope-1 scope-2',
         ];
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         var_dump($body);
@@ -182,6 +186,7 @@ class RefreshGrantTest extends TestCase
             'client_secret' => 'client-secret',
             'scope' => '',
         ];
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         self::assertThat($response->getStatusCode(), self::equalTo(401));
@@ -198,6 +203,7 @@ class RefreshGrantTest extends TestCase
             'client_secret' => $this->client->{'secret'},
             'scope' => '',
         ];
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         var_dump($body);
@@ -212,7 +218,7 @@ class RefreshGrantTest extends TestCase
             ->get();
         var_dump($access_token);
         self::assertThat($access_token->count(), self::equalTo(2));
-        self::assertThat($access_token->slice(0)->take(1)->first()->{'scopes'}, self::equalTo($access_token->slice(1)->take(1)->first()->{'scopes'}));
+        self::assertThat($access_token->slice(0)->take(1)->first()->{'scopes'}, self::logicalNot(self::equalTo($access_token->slice(1)->take(1)->first()->{'scopes'})));
     }
 
     public function test_it_access_refresh_route_with_right_argument_but_no_scope__ok()
@@ -225,6 +231,7 @@ class RefreshGrantTest extends TestCase
             'client_id' => $this->client->{'id'},
             'client_secret' => $this->client->{'secret'},
         ];
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         var_dump($body);
@@ -252,6 +259,7 @@ class RefreshGrantTest extends TestCase
             'client_secret' => $this->client->{'secret'},
             'scope' => 'scope-1 scope-2',
         ];
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         self::assertThat($response->getStatusCode(), self::equalTo(400));
@@ -268,6 +276,7 @@ class RefreshGrantTest extends TestCase
             'client_secret' => $this->client->{'secret'},
             'scope' => 'scope-1 scope-2',
         ];
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         self::assertThat($response->getStatusCode(), self::equalTo(401));
@@ -292,6 +301,7 @@ class RefreshGrantTest extends TestCase
             'scope' => 'scope-1 scope-2',
         ];
 
+        $this->refreshApplication();
         $response = $this->post('/oauth/token', $body)
             ->response;
         var_dump($body);
